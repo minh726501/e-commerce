@@ -6,6 +6,7 @@ import bqminh.e_commerce.dto.response.UserResponse;
 import bqminh.e_commerce.enity.User;
 import bqminh.e_commerce.mapper.UserMapper;
 import bqminh.e_commerce.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,12 +15,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserService(UserRepository repository,UserMapper userMapper) {
+    public UserService(UserRepository repository,UserMapper userMapper,PasswordEncoder passwordEncoder) {
         this.userRepository = repository;
         this.userMapper=userMapper;
+        this.passwordEncoder=passwordEncoder;
     }
 
     public UserResponse createUser(UserRequest request){
@@ -30,6 +33,7 @@ public class UserService {
             throw new RuntimeException("email da ton tai");
         }
         User user=userMapper.toUser(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }

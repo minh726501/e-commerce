@@ -12,6 +12,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+jwt:
+    secret: xajplNSKnmmet4l8OL8g1zYBN4elj+Bt6INiYyf3N6N2kt5gFtBPP/QrcSc/N2GY
+    expiration: 900000 # 15 phút (đơn vị ms)
+    refresh-expiration: 1800000
+
+
 
 server:
   port: 8080
