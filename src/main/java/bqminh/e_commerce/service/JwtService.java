@@ -43,6 +43,7 @@ public class JwtService {
             JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                     .subject(user.getEmail())
                     .issuer("e-commerce")
+                    .claim("type","refresh")
                     .issueTime(new Date(System.currentTimeMillis()))
                     .expirationTime(new Date(System.currentTimeMillis() + refreshExpiration))
                     .build();
