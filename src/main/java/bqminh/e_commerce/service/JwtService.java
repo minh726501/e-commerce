@@ -26,6 +26,7 @@ public class JwtService {
             JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
             JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                     .subject(user.getEmail())
+                    .claim("role",user.getRole().getName())
                     .issuer("e-commerce")
                     .issueTime(new Date(System.currentTimeMillis()))
                     .expirationTime(new Date(System.currentTimeMillis() + expiration))

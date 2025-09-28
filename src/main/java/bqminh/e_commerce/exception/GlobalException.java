@@ -3,6 +3,7 @@ package bqminh.e_commerce.exception;
 import bqminh.e_commerce.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,5 +27,9 @@ public class GlobalException {
     public ResponseEntity<ApiResponse<String>>handleRuntimeException(RuntimeException e){
         ApiResponse<String>response=new ApiResponse<>(HttpStatus.BAD_REQUEST.value(),e.getMessage(),null);
         return ResponseEntity.badRequest().body(response);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<String>>handleAccessDeniedException(AccessDeniedException e){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "FORBIDDEN",null));
     }
 }

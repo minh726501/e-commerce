@@ -1,5 +1,6 @@
 package bqminh.e_commerce.dto.response;
 
+import bqminh.e_commerce.enity.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,4 +9,5 @@ import lombok.Setter;
 public class UserResponse {
     private String username;
     private String email;
+    private String role;
 }

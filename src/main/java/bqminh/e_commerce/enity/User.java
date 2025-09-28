@@ -1,9 +1,7 @@
 package bqminh.e_commerce.enity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +15,8 @@ public class User {
     private String username;
     private String email;
     private String password;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    @JsonIgnore
+    private Role role;
 }

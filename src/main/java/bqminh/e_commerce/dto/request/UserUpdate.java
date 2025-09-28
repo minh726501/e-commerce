@@ -1,5 +1,6 @@
 package bqminh.e_commerce.dto.request;
 
+import bqminh.e_commerce.enity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

@@ -58,6 +58,7 @@ public class UserService {
             throw new RuntimeException("email da ton tai");
         }
         userMapper.updateUserFromDto(update,existingUser);
+        existingUser.setPassword(passwordEncoder.encode(existingUser.getPassword()));
         userRepository.save(existingUser);
         return userMapper.toUserResponse(existingUser);
     }
