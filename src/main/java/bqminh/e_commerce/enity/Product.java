@@ -4,18 +4,19 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Getter
 @Setter
-@Table(name = "roles")
-public class Role {
+@Getter
+@Table(name = "products")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "role")
-    private List<User>users;
-
+    private String description;
+    private double price;
+    private int stock;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

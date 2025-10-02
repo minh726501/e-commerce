@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .csrf(c->c.disable())
                 .authorizeHttpRequests(authorize -> authorize
 
-                        .requestMatchers("/login", "/auth/logout", "/refresh-token","/roles/**").permitAll()
+                        .requestMatchers("/login", "/auth/logout", "/refresh-token","/roles/**","/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2

@@ -7,15 +7,14 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Getter
 @Setter
-@Table(name = "roles")
-public class Role {
+@Getter
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @OneToMany(mappedBy = "role")
-    private List<User>users;
-
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }
