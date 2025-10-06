@@ -27,7 +27,7 @@ public class CartController {
     public ResponseEntity<ApiResponse<CartResponse>>addToCart(@RequestBody AddToCartRequest request){
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Add Product To cart", cartService.addToCart(request)));
     }
-    @PostMapping("/carts/update")
+    @PutMapping("/carts/update")
     public ResponseEntity<ApiResponse<CartResponse>>updateCart(@RequestBody UpdateCartRequest request){
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Update Cart", cartService.updateCart(request)));
     }
