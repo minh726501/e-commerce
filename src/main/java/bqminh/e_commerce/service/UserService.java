@@ -2,10 +2,14 @@ package bqminh.e_commerce.service;
 
 import bqminh.e_commerce.dto.request.UserRequest;
 import bqminh.e_commerce.dto.request.UserUpdate;
+import bqminh.e_commerce.dto.response.PagedResponse;
 import bqminh.e_commerce.dto.response.UserResponse;
 import bqminh.e_commerce.enity.User;
 import bqminh.e_commerce.mapper.UserMapper;
 import bqminh.e_commerce.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +41,17 @@ public class UserService {
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
-    public List<UserResponse>getAllUser(){
-        List<User> users=userRepository.findAll();
-        return userMapper.toListUserResponse(users);
+    public PagedResponse<UserResponse> getAllUser(int page, int size){
+        Pageable pageable=PageRequest.of(page-1,size);
+        Page<User>userPage=userRepository.findAll(pageable);
+        List<User>userList=userPage.getContent();
+        List<UserResponse>content=new ArrayList<>();
+        for (User user:userList){
+            UserResponse response=userMapper.toUserResponse(user);
+            content.add(response);
+        }
+        return new PagedResponse<>(content,userPage.getNumber()+1,userPage.getSize(),userPage.getTotalPages(),userPage.getTotalElements());
+
     }
     public UserResponse getUserById(long id){
         Optional<User> getUser=userRepository.findById(id);

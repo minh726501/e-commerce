@@ -2,14 +2,19 @@ package bqminh.e_commerce.service;
 
 import bqminh.e_commerce.dto.request.ProductRequest;
 import bqminh.e_commerce.dto.request.ProductUpdateRequest;
+import bqminh.e_commerce.dto.response.PagedResponse;
 import bqminh.e_commerce.dto.response.ProductResponse;
 import bqminh.e_commerce.enity.Category;
 import bqminh.e_commerce.enity.Product;
 import bqminh.e_commerce.mapper.ProductMapper;
 import bqminh.e_commerce.repository.CategoryRepository;
 import bqminh.e_commerce.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,10 +50,26 @@ public class ProductService {
         }
         return productMapper.toProductResponse(getProductDB.get());
     }
-    public List<ProductResponse>getAllProduct(){
-        List<Product>getAll=productRepository.findAll();
-        return productMapper.toListProductResponse(getAll);
+    public PagedResponse<ProductResponse> getAllProduct(int page,int size){
+        Pageable pageable= PageRequest.of(page-1,size);
+        Page<Product>productPage=productRepository.findAll(pageable);
+        List<Product>productList=productPage.getContent();
+        List<ProductResponse>content=new ArrayList<>();
+        for (Product product:productList){
+            ProductResponse response=productMapper.toProductResponse(product);
+            content.add(response);
+        }
+        return new PagedResponse<>(content,productPage.getNumber()+1,productPage.getSize(),productPage.getTotalPages(),productPage.getTotalElements());
     }
+    public PagedResponse<ProductResponse>filterProducts(String category,String keyword,Double minPrice,Double maxPrice,int page,int size){
+        int offset=(page-1)*size;
+        List<Product>filterProduct=productRepository.filterProduct(category,keyword,minPrice,maxPrice,size,offset);
+        long totalElements = productRepository.countFilteredProducts(category, keyword, minPrice, maxPrice);
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+
+        return new PagedResponse<>(productMapper.toListProductResponse(filterProduct),page,size,totalPages,totalElements);
+    }
+
     public ProductResponse updateProduct(ProductUpdateRequest request){
         Optional<Category>getCategoryDB=categoryRepository.findById(request.getCategoryId());
         if (getCategoryDB.isEmpty()){

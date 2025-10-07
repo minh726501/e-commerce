@@ -1,5 +1,6 @@
 package bqminh.e_commerce.mapper;
 
+import bqminh.e_commerce.dto.request.RegisterRequest;
 import bqminh.e_commerce.dto.request.UserRequest;
 import bqminh.e_commerce.dto.request.UserUpdate;
 import bqminh.e_commerce.dto.response.UserResponse;
@@ -7,6 +8,7 @@ import bqminh.e_commerce.enity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,4 +19,5 @@ public interface UserMapper {
     User toUser(UserRequest request);
     List<UserResponse> toListUserResponse(List<User>users);
     void updateUserFromDto(UserUpdate update, @MappingTarget User user);
+    User toUser(RegisterRequest request);
 }

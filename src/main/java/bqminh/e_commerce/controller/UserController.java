@@ -3,9 +3,11 @@ package bqminh.e_commerce.controller;
 import bqminh.e_commerce.dto.ApiResponse;
 import bqminh.e_commerce.dto.request.UserRequest;
 import bqminh.e_commerce.dto.request.UserUpdate;
+import bqminh.e_commerce.dto.response.PagedResponse;
 import bqminh.e_commerce.dto.response.UserResponse;
 import bqminh.e_commerce.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse<>(200,"Tao User Thanh Cong ",userService.createUser(request)));
     }
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserResponse>>>getAllUser(){
-        return ResponseEntity.ok(new ApiResponse<>(200,"Lay All User",userService.getAllUser()));
+    public ResponseEntity<ApiResponse<PagedResponse<UserResponse>>>getAllUser(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size){
+        return ResponseEntity.ok(new ApiResponse<>(200,"Lay All User",userService.getAllUser(page,size)));
     }
     @GetMapping("/users/{id}")
     private ResponseEntity<ApiResponse<UserResponse>>getUserById(@PathVariable long id){

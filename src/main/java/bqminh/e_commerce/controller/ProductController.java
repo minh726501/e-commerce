@@ -3,6 +3,7 @@ package bqminh.e_commerce.controller;
 import bqminh.e_commerce.dto.ApiResponse;
 import bqminh.e_commerce.dto.request.ProductRequest;
 import bqminh.e_commerce.dto.request.ProductUpdateRequest;
+import bqminh.e_commerce.dto.response.PagedResponse;
 import bqminh.e_commerce.dto.response.ProductResponse;
 import bqminh.e_commerce.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -30,9 +31,22 @@ public class ProductController {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(),"Get Product By Id" , productService.getProductById(id)));
     }
     @GetMapping("/products")
-    public ResponseEntity<ApiResponse<List<ProductResponse>>>getAllProduct(){
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(),"Get All Product" , productService.getAllProduct()));
+    public ResponseEntity<ApiResponse<PagedResponse<ProductResponse>>>getAllProduct(@RequestParam(defaultValue = "1") int page,@RequestParam(defaultValue = "10") int size){
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(),"Get All Product" , productService.getAllProduct(page,size)));
     }
+    @GetMapping("/products/filter")
+    public ResponseEntity<ApiResponse<PagedResponse<ProductResponse>>> filterProducts(
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PagedResponse<ProductResponse> response = productService.filterProducts(category, keyword, minPrice, maxPrice, page, size);
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Filter Product", response));
+    }
+
     @PutMapping("/products")
     public ResponseEntity<ApiResponse<ProductResponse>>updateProduct(@RequestBody ProductUpdateRequest request){
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(),"Update Product Success" , productService.updateProduct(request)));

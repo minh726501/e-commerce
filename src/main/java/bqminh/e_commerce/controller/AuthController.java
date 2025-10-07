@@ -3,6 +3,7 @@ package bqminh.e_commerce.controller;
 import bqminh.e_commerce.dto.ApiResponse;
 import bqminh.e_commerce.dto.request.LoginRequest;
 import bqminh.e_commerce.dto.request.RefreshTokenRequest;
+import bqminh.e_commerce.dto.request.RegisterRequest;
 import bqminh.e_commerce.dto.response.LoginResponse;
 
 
@@ -28,6 +29,12 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
             return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Login thanh cong", authService.login(request)));
     }
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<Void>>register(@RequestBody RegisterRequest request){
+        authService.register(request);
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), "Register thanh cong",null));
+    }
+
     @PostMapping("/auth/logout")
     public ResponseEntity<ApiResponse<String>>logout(@RequestBody RefreshTokenRequest refreshToken){
         authService.logout(refreshToken.getRefreshToken());
