@@ -14,7 +14,7 @@ Hỗ trợ **đăng nhập, quản lý sản phẩm, giỏ hàng, đặt hàng v
 | Spring Security + JWT | Xác thực & phân quyền |
 | JPA (Hibernate) | ORM thao tác DB |
 | MySQL | Cơ sở dữ liệu |
-| Swagger / Postman | Kiểm thử & tài liệu API |
+| Postman | Test API |
 
 ---
 
